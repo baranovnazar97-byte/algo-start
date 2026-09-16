@@ -108,7 +108,7 @@ compose_at "$RELEASE_DIR" up -d --no-build
 HEALTHY=0
 for _ in $(seq 1 90); do
   if compose_at "$RELEASE_DIR" exec -T frontend \
-    wget -q -O /dev/null http://localhost/api/health 2>/dev/null; then
+    wget -q -O /dev/null http://127.0.0.1/api/health 2>/dev/null; then
     HEALTHY=1
     break
   fi

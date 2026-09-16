@@ -132,9 +132,23 @@ try {
 
     $PublicKey = (Get-Content -Raw -LiteralPath "$KeyPath.pub").Trim()
     $PublicKeyBase64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($PublicKey))
-    $InstallKeyCommand = 'umask 077; mkdir -p ~/.ssh; touch ~/.ssh/authorized_keys; chmod 700 ~/.ssh; chmod 600 ~/.ssh/authorized_keys; key="$(printf %s {0} | base64 -d)"; grep -qxF "$key" ~/.ssh/authorized_keys || printf "%s\n" "$key" >> ~/.ssh/authorized_keys' -f $PublicKeyBase64
+    # Avoid quoted arguments here: Windows OpenSSH can remove nested quotes
+    # while constructing the remote command. The base64 payload has no spaces.
+    $InstallKeyCommand = 'umask 077;mkdir -p ~/.ssh;touch ~/.ssh/authorized_keys;chmod 700 ~/.ssh;chmod 600 ~/.ssh/authorized_keys;(printf %s {0}|base64 -d;echo)>>~/.ssh/authorized_keys' -f $PublicKeyBase64
     Write-Host 'A new host key will be saved automatically; a changed host key is still rejected.' -ForegroundColor Yellow
     Run-Native 'ssh.exe' ($SshOptions + @($Target, $InstallKeyCommand))
+
+    $PreviousErrorActionPreference = $ErrorActionPreference
+    try {
+      $ErrorActionPreference = 'Continue'
+      & ssh.exe @SshOptions '-o' 'BatchMode=yes' $Target 'true' 2>$null
+      $KeyAuthenticationReady = $LASTEXITCODE -eq 0
+    } finally {
+      $ErrorActionPreference = $PreviousErrorActionPreference
+    }
+    if (-not $KeyAuthenticationReady) {
+      throw 'The deployment SSH key could not be installed. Check root SSH access and retry.'
+    }
   }
 
   Write-Host ''
