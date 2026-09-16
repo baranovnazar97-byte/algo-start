@@ -23,7 +23,7 @@ function Find-Git {
 }
 
 function Run-Git([string[]]$Arguments) {
-  & $script:Git @Arguments
+  & $script:Git --no-pager @Arguments
   if ($LASTEXITCODE -ne 0) {
     throw "Git failed with exit code $LASTEXITCODE."
   }
@@ -194,7 +194,7 @@ try {
   Write-Host '4/5 Updating the VPS...' -ForegroundColor Cyan
   & powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$PSScriptRoot\deploy-vps.ps1" -Revision $Revision -SkipChecks
   if ($LASTEXITCODE -ne 0) {
-    throw 'GitHub was updated but the VPS failed. Fix the issue and run .\deploy.cmd.'
+    throw 'GitHub was updated but the VPS failed. Fix the issue and rerun the same stage command.'
   }
 
   Write-Host ''

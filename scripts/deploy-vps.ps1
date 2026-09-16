@@ -110,13 +110,22 @@ try {
   $SshOptions = @(
     '-i', $KeyPath,
     '-o', 'IdentitiesOnly=yes',
-    '-o', 'StrictHostKeyChecking=yes',
+    '-o', 'StrictHostKeyChecking=accept-new',
     '-o', 'ConnectTimeout=15'
   )
   $Target = "$User@$Server"
 
-  & ssh.exe @SshOptions '-o' 'BatchMode=yes' $Target 'true' 2>$null
-  if ($LASTEXITCODE -ne 0) {
+  # A failed key-only probe is expected on the first deployment. Windows
+  # PowerShell can otherwise turn native stderr into a terminating error.
+  $PreviousErrorActionPreference = $ErrorActionPreference
+  try {
+    $ErrorActionPreference = 'Continue'
+    & ssh.exe @SshOptions '-o' 'BatchMode=yes' $Target 'true' 2>$null
+    $KeyAuthenticationReady = $LASTEXITCODE -eq 0
+  } finally {
+    $ErrorActionPreference = $PreviousErrorActionPreference
+  }
+  if (-not $KeyAuthenticationReady) {
     Write-Host ''
     Write-Host 'First run: SSH will ask for the VPS root password.' -ForegroundColor Yellow
     Write-Host 'The password is not displayed while typing. This is expected.' -ForegroundColor Yellow
@@ -124,8 +133,8 @@ try {
     $PublicKey = (Get-Content -Raw -LiteralPath "$KeyPath.pub").Trim()
     $PublicKeyBase64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($PublicKey))
     $InstallKeyCommand = 'umask 077; mkdir -p ~/.ssh; touch ~/.ssh/authorized_keys; chmod 700 ~/.ssh; chmod 600 ~/.ssh/authorized_keys; key="$(printf %s {0} | base64 -d)"; grep -qxF "$key" ~/.ssh/authorized_keys || printf "%s\n" "$key" >> ~/.ssh/authorized_keys' -f $PublicKeyBase64
-    Write-Host 'Compare the SSH fingerprint with the VPS panel before answering yes.' -ForegroundColor Yellow
-    Run-Native 'ssh.exe' @('-o', 'ConnectTimeout=15', $Target, $InstallKeyCommand)
+    Write-Host 'A new host key will be saved automatically; a changed host key is still rejected.' -ForegroundColor Yellow
+    Run-Native 'ssh.exe' ($SshOptions + @($Target, $InstallKeyCommand))
   }
 
   Write-Host ''
@@ -152,7 +161,7 @@ try {
   Write-Host "Website: $WebsiteUrl" -ForegroundColor Green
   Write-Host "API health: $WebsiteUrl/api/health" -ForegroundColor Green
   Write-Host ''
-  Write-Host 'For the next update, run: .\deploy.cmd'
+  Write-Host 'For a VPS-only retry of this version, run: .\deploy.cmd'
 } finally {
   Pop-Location
 }
