@@ -1,0 +1,43 @@
+# Dependencies and build output
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+build/
+coverage/
+
+# Local settings and secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Logs and temporary files
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+tmp/
+temp/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+~$*.docx
+docs/*.tmp
+frontend-*.png
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Local database dumps
+*.dump
+backups/
+
+# Local SSH key and deployment archive
+.deploy/
