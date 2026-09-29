@@ -41,3 +41,20 @@ backups/
 
 # Local SSH key and deployment archive
 .deploy/
+
+# Local release and deployment helpers. The dev URL helper is part of the app.
+scripts/*
+!scripts/show-dev-url.mjs
+*.cmd
+.github/
+
+# Coursework and operational documentation is kept locally, not published
+# with the application source.
+README.md
+**/README.md
+DEPLOY.md
+FIRST_RELEASE.md
+STAGES.md
+WEEKLY_PLAN.md
+docs/
+*.pdf
