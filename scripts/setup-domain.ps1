@@ -1,7 +1,7 @@
 param(
   [Parameter(Mandatory = $true, Position = 0)]
   [string]$Domain,
-  [string]$Server = '81.90.25.140',
+  [string]$Server = '31.76.241.208',
   [switch]$NoWww
 )
 

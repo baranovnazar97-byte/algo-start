@@ -37,8 +37,8 @@ npm run dev
 
 После завершения проверьте:
 
-- `http://81.90.25.140`
-- `http://81.90.25.140/api/health`
+- `http://31.76.241.208`
+- `http://31.76.241.208/api/health`
 - `https://github.com/baranovnazar97-byte/gaming-simulator`
 
 ## 3. Записи Cloudflare
@@ -50,7 +50,7 @@ npm run dev
 
 | Type | Name | Content | Proxy status |
 |---|---|---|---|
-| A | `@` | `81.90.25.140` | DNS only |
+| A | `@` | `31.76.241.208` | DNS only |
 | CNAME | `www` | ваш домен, например `example.ru` | DNS only |
 
 Не создавайте запись AAAA, пока у VPS нет проверенного IPv6. В панели VPS или
@@ -67,7 +67,7 @@ Resolve-DnsName www.example.ru
 
 ## 4. Подключение домена и HTTPS
 
-Когда обе DNS-записи начали возвращать `81.90.25.140`, выполните:
+Когда обе DNS-записи начали возвращать `31.76.241.208`, выполните:
 
 ```powershell
 .\setup-domain.cmd example.ru

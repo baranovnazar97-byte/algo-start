@@ -200,7 +200,7 @@ try {
   Write-Host ''
   Write-Host '5/5 Weekly release complete.' -ForegroundColor Green
   Write-Host "GitHub: https://github.com/baranovnazar97-byte/gaming-simulator/commit/$Revision"
-  $WebsiteUrl = 'http://81.90.25.140'
+  $WebsiteUrl = 'http://31.76.241.208'
   $DomainStatePath = Join-Path $ProjectRoot '.deploy/domain.txt'
   if (Test-Path -LiteralPath $DomainStatePath) {
     $SavedUrl = (Get-Content -Raw -LiteralPath $DomainStatePath).Trim()

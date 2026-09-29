@@ -1,5 +1,5 @@
 param(
-  [string]$Server = '81.90.25.140',
+  [string]$Server = '31.76.241.208',
   [string]$User = 'root',
   [string]$InstallDir = '/opt/algorithmika',
   [string]$Revision = '',

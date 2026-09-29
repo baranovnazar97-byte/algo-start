@@ -4,7 +4,7 @@ set -Eeuo pipefail
 umask 077
 
 INSTALL_DIR="${1:-/opt/algorithmika}"
-PUBLIC_HOST="${2:-81.90.25.140}"
+PUBLIC_HOST="${2:-31.76.241.208}"
 STAGE_DIR="${3:?Pass the extracted release directory}"
 REVISION="${4:-}"
 
