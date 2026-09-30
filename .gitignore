@@ -50,11 +50,8 @@ scripts/*
 
 # Coursework and operational documentation is kept locally, not published
 # with the application source.
-README.md
-**/README.md
 DEPLOY.md
 FIRST_RELEASE.md
 STAGES.md
 WEEKLY_PLAN.md
-docs/
 *.pdf
