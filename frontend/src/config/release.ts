@@ -2,7 +2,7 @@
  * Published demonstration stage. The stage-*.cmd scripts update this value.
  * Keep the full local project at stage 6 between demonstrations.
  */
-export const releaseStage: number = 2;
+export const releaseStage: number = 3;
 
 export const releaseInfo = {
   1: {
