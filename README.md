@@ -76,7 +76,7 @@ npm run dev:frontend
 ```text
 frontend/              React, TypeScript, Vite, страницы и мини-игры
 backend/               NestJS, REST API, pg и SQL-инициализация
-docs/                  исходная документация и файл Word
+docs/                  исходная документация проекта
 docker-compose.yml     общий production-подобный запуск
 ```
 
@@ -90,4 +90,4 @@ docker-compose.yml     общий production-подобный запуск
 
 ## Документация
 
-- `docs/Курсовой_проект_Алгоритмика.docx` - Основная документация проекта.
+- `docs/` - Основная документация проекта.
